@@ -3,6 +3,7 @@ from tkinter import *
 from typing import Collection
 from tkinter import messagebox
 import random
+import json
 
 # .........................................Password generator......................#
 def generate_password():
@@ -39,14 +40,33 @@ def save():
     website_text=website_entry.get()
     email_text=email_entry.get()
     password_text=password_entry.get()
-    
+    new_data={
+        website_text:{
+            "email":email_text,
+            "password":password_text
+        }
+    }
     
     #message box
     if len(website_text) or len(password_text):
         is_ok=messagebox.askokcancel(title=website_text,message=f"These are the details entered:\nEmail: {email_text} \npassword: {password_text}\nDo you want to save? ")
         if is_ok:
-            with open("data.txt",'a') as data_file:
-                data_file.write(f"{website_text} | {email_text} | {password_text}\n")
+            try:
+                with open("data.json",'r') as data_file:
+                    data=json.load(data_file)
+                    data.update(new_data)
+                    
+                     
+            except FileNotFoundError:
+                with open("data.json",'w') as data_file:
+                    json.dump(new_data,data_file,indent=4)
+
+            else:
+                data.update(new_data)
+                with open("data.json",'w') as data_file:
+                    json.dump(data,data_file,indent=4)
+                
+            finally:
                 website_entry.delete(0,END)
                 password_entry.delete(0,END)
     else:
