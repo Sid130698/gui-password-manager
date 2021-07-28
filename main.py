@@ -79,7 +79,7 @@ website_entry.grid(row=1,column=1,columnspan=2)
 website_entry.focus()
 
 email_entry=Entry(width=42)
-email_entry.insert(0,"sidsingh130698@gmail.com")
+email_entry.insert(0,"USER@email.com")
 email_entry.grid(row=2,column=1,columnspan=2)
 
 password_entry=Entry(width=24)
