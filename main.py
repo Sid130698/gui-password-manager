@@ -71,6 +71,28 @@ def save():
                 password_entry.delete(0,END)
     else:
         messagebox.showerror(title="Empty Fields",message="Kindly fill the details correctly before saving")
+#---------------------------------Find passowrd-----------------------------------------#
+def find_password():
+    website=website_entry.get()
+    try:
+        with open("data.json") as data_file:
+            data=json.load(data_file)
+            if website in data:
+                email=data[website]['email']
+                password=data[website]['password']
+                messagebox.showinfo(title=website,message=f"Email: {email}\nPassword: {password}")
+            else:
+                messagebox.showerror(title=website,message="This entry doesn't exist")
+
+
+    except FileNotFoundError:
+        messagebox.showerror(title="No Password saved",message="no entry exists")
+    finally:
+        website_entry.delete(0,END)   
+
+
+
+
 
 #.........................................UI Setup....................................#
 window=Tk()
@@ -94,8 +116,8 @@ password_label.grid(row=3,column=0)
 
 
 #entries
-website_entry=Entry(width=42)
-website_entry.grid(row=1,column=1,columnspan=2)
+website_entry=Entry(width=24)
+website_entry.grid(row=1,column=1,columnspan=1)
 website_entry.focus()
 
 email_entry=Entry(width=42)
@@ -111,5 +133,8 @@ generate_password_button.grid(row=3,column=2)
 
 add_button=Button(text="Add",width=36,command=save)
 add_button.grid(row=4,column=1,columnspan=2)
+
+search=Button(text="Search ",width=15,command=find_password)
+search.grid(row=1,column=2)
 
 window.mainloop()
